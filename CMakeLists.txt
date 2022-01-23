@@ -64,7 +64,6 @@ target_link_libraries(hitagimon
 		m
 		hitagicortex
 		hitagisys
-		stdc++
 		c
 		m
 		gcc # necessary for soft float support, will need to provide my own custom routines ahead of this point to access the fpu
