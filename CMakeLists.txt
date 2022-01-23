@@ -26,21 +26,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-add_library(hitagisys
-		sys/brk.cc
-		sys/fstat.cc
-		sys/isatty.cc
-		sys/lseek.cc
-		sys/write.cc
-		sys/read.cc
-		sys/open.cc
-		sys/kill.cc
-		sys/setitimer.cc
-		sys/close.cc
-		sys/gettimeofday.cc
-		sys/access.cc
-		sys/getpid.cc
-		sys/_exit.cc sys/link.cc sys/unlink.cc)
 add_library(hitagicortex
 		cortex/Interrupts.cc
 		cortex/Interrupts.h
@@ -62,7 +47,6 @@ target_link_libraries(hitagimon
 		gcc
 		c
 		hitagicortex
-		hitagisys
 		c
 		gcc # necessary for soft float support, will need to provide my own custom routines ahead of this point to access the fpu
 		)

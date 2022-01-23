@@ -37,33 +37,6 @@ SECTIONS
 		_etext = .; /* define a symbol named _etext and assign it to the
 					   address following the end of the text section data */ 
 
-		___CTOR_LIST__ = .; /* put a symbol __CTOR_LIST__ at this point */ 
-
-		LONG((___CTOR_END__ - ___CTOR_LIST__) / 4 - 2) /* reserve a block of
-														  memory and save the
-														  result of end minus
-														  list start. This will
-														  show up in the final
-														  executable */ 
-
-		*(.ctors)		/* Take the contents of the .ctors elf section and
-						   place it here, this is how you can request custom
-						   sections to placed in specific locations */ 
-
-		LONG(0) /* allocate a long's worth of space (4 bytes in this case) and
-				   assign it zero (padding) */ 
-
-		___CTOR_END__ = .; /* define the symbol __CTOR_END__ to be the point
-							  after the previous padding */ 
-
-
-		/* do the same thing again but for the destructors section */ 
-		___DTOR_LIST__ = .;  
-		LONG((___DTOR_END__ - ___DTOR_LIST__) / 4 - 2) 
-		*(.dtors) 
-		LONG(0) 
-		___DTOR_END__ = .; 
-
 	/* the arrow syntax tells the linker that the text section will go into the
 	 * memory location named "rom", it is sequential as we will see in the next
 	 * few sections*/ 
@@ -81,28 +54,10 @@ SECTIONS
 	{
 		__data_start__ = .; 
 		KEEP(*(.data)) 
-		CONSTRUCTORS  /* we want to place the constructors data here */
-		__data_end__ = .; 
+		__data_end__ = .;
 		_edata = .; 
 	} >ram 
-	.heap : { 
-		/* this section is synthetic, I do not actually copy the contents of the heap
-		 * section over on boot, instead I just want the location of where it should
-		 * start.In this case, the heap will start _after_ the .bss and .data sections
-		 * in ram. It is placed linearly in order so there is no mystery to this. 
-		 */
-		__heap_start__ = .; 
-		end = __heap_start__; 
-		_end = end; 
-		__end = end; 
-		KEEP(*(.heap)) 
-		__heap_end__ = .; 
-		/* __HeapLimit = __heap_end__; */ 
-	
-	} >ram 
 }
-
-/* these two locations are _very_ important for getting the program to startup correctly */ 
 
 
 
@@ -140,8 +95,7 @@ SECTIONS
  */ 
 
 theDataSectionLength = (__data_end__ - __data_start__); 
-theDataSectionROMLocation = 0x20000000; 
-cs1 = -(system_address_table + prcb_ptr + start_ip) ; 
+cs1 = -(system_address_table + prcb_ptr + start_ip) ;
 theBSSSectionLength = (__bss_end__ - __bss_start__); 
 
 /* This directive allows you to denote the file that will go onto the front of
