@@ -1,4 +1,4 @@
-GROUP(-lgcc -lm -lc -liberty -lc ) /* libraries to link in */
+GROUP(-lgcc -lc -liberty -lc ) /* libraries to link in */
 
 MEMORY 
 {
