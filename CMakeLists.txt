@@ -26,11 +26,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-add_library(hitagichipset
-		chipset/IODevice.cc
-		chipset/IODevice.h
-		chipset/ChipsetInteract.h
-		)
 add_library(hitagisys
 		sys/brk.cc
 		sys/fstat.cc
@@ -49,8 +44,8 @@ add_library(hitagisys
 add_library(hitagicortex
 		cortex/Interrupts.cc
 		cortex/Interrupts.h
-		cortex/EnvironmentInterface.cc
-		cortex/EnvironmentInterface.h cortex/Faults.cc cortex/Faults.h)
+		cortex/Faults.cc 
+		cortex/Faults.h)
 add_executable(hitagimon
 		boot/sx_init.s # this must ALWAYS be first!
 		boot/f_table.s
@@ -70,7 +65,6 @@ target_link_libraries(hitagimon
 		#doom
 		hitagicortex
 		hitagisys
-		hitagichipset
 		stdc++
 		c
 		m
