@@ -61,10 +61,8 @@ add_executable(hitagimon
 target_link_libraries(hitagimon
 		gcc
 		c
-		m
 		hitagicortex
 		hitagisys
 		c
-		m
 		gcc # necessary for soft float support, will need to provide my own custom routines ahead of this point to access the fpu
 		)

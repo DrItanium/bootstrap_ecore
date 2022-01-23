@@ -8,6 +8,8 @@ namespace cortex
 {
     void
     FaultData::display() {
+        /// @todo reimplement if it makes sense
+#if 0
         printf("Fault Type: %x\n", ftype);
         switch (ftype) {
             case 1: printf("\tTrace Fault\n"); break;
@@ -41,6 +43,7 @@ namespace cortex
         printf("Faulting Address: %p\n", faddress);
         printf("PC: %x\n", pc);
         printf("AC: %x\n", ac);
+#endif
     }
     namespace {
         FaultHandler userReserved_ = 0;

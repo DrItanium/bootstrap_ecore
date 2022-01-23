@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * Fault handler routines
  */
 #include "../cortex/Faults.h"
-#include <string>
 
 extern "C"
 void
