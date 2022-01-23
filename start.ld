@@ -16,7 +16,7 @@ MEMORY
 	 * It assists in testing various routines and aspects of the emulation for
 	 * correctness.
 	 */
-	ram (!rx) : ORIGIN = 0xFFFE0000, l = 4k
+	ram (!rx) : ORIGIN = 0xFFFE0000, l = 2k
 } 
 
 /* Define a symbol that your code can reference. The linker adds the symbol. */ 

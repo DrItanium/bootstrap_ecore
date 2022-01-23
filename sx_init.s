@@ -456,58 +456,8 @@ _user_type_core:
 	flushreg
 	ret
  start_ip:
+ # we are not going to be sending an IAC message at any point here
     mov 0, g14 # C compiler expects g14 = 0
-
-# enable address debugging
-    # lda 0xFE000022, g8
-    # lda 0x1, g9
-    # st g9, 0(g8)
-    # copy the interrupt table to RAM space
-    lda 1028, g0 # load length of the interrupt table
-    lda 0, g4 # initialize offset to 0
-    lda intr_table, g1 # load source
-    lda intr_ram, g2    # load address of new table
-    bal move_data # branch to move routine
-    # lda 0xFE000022, g8
-    # lda 0, g9
-    # st g9, 0(g8)
-
-# copy PRCB to RAM space, located at _prcb_ram
-
-    lda 176,g0 # load length of PRCB
-    lda 0, g4 # initialize offset to 0
-    lda prcb_ptr, g1 # load source
-    lda _prcb_ram, g2 # load destination
-    bal move_data # branch to move routine
- # fix up the PRCB to point to a new interrupt table
-    lda intr_ram, g12 # load address
-    st g12, 20(g2) # store into PRCB
-
- /*
-  * -- At this point, the PRCB, and interrupt table have been moved to RAM.
-  *    It is time to issue a reinitialize IAC, which will start us anew with our RAM based PRCB.
-  *
-  * -- The IAC message, found in the 4 words located at the reinitialize_iac label, contains pointers
-  *    to the current System Address Table, the new RAM based PRCB, and to the Instruction Pointer
-  *    labeled start_again_ip
- */
-    lda 0xff000010, g5
-    lda reinitialize_iac, g6
-    synmovq g5, g6
-    /* FALLTHROUGH DOES NOT HAPPEN HERE!!!! */
-
-  /*
-   * The process will begin execution here after being reinitialized.
-   *    We will now setup the stacks and continue.
-   */
-
-  start_again_ip:
-  /* -- this would be a good place to diable board interrupts if you are using an interrupt controller.
-   *
-   * -- Before call to main, we need to take the processor out of the "interrupted" state.
-   *    In order to do this, we will execute a call statement, then "fix up" the stack frame
-   *    to cause an interrupt return to be executed.
-   */
     ldconst 64, g0 # bump up stack to make
     addo sp, g0, sp # room for simulated
                     # interrupt frame
@@ -526,7 +476,6 @@ _user_type_core:
     callx _init_fp
 .endif
     callx setupInterruptHandler
-    #callx _activate_read_write_transactions
     mov 0, g14      # C compiler expects g14 = 0
     callx _runChecks # assume a main for startup
     # code goes here to run our tests
@@ -550,19 +499,10 @@ setupInterruptHandler:
     ret
 
     .align 4 # Align BEFORE the label...holy crap
-reinitialize_iac:
-    .word 0x93000000    # reinitialize IAC message
-    .word system_address_table
-    .word _prcb_ram     # use newly copied PRCB
-    .word start_again_ip    # start here
 
 defaultInterruptHandlerValue:
     .word 0xFCFDFEFF
-/* -- define RAM area to copy the PRCB and interrupt table
- *    to after initial bootup from EPROM/FLASH
- */
-    .bss intr_ram, 1028, 6
-    .bss _prcb_ram, 176, 6
+
  /* -- define RAM area for stacks; size is only a suggestion your actual
   *    mileage may vary
   */
@@ -572,16 +512,8 @@ defaultInterruptHandlerValue:
 
 /* -- Below is a software loop to move data */
 
-move_data:
-    ldq (g1)[g4*1], g8  # load 4 words into g8
-    stq g8, (g2)[g4*1]  # store to RAM block
-    addi g4,16, g4      # increment index
-    cmpibg  g0,g4, move_data # loop until done
-    bx (g14)
 
-# setup the bss section so do giant blocks of writes
-
-/* The routine below fixes up the stack for a flase interrupt return.
+/* The routine below fixes up the stack for a false interrupt return.
  * We have reserved area on the stack before the call to this
  * routine. We need to build a phony interrupt record here
  * to force the processor to pick it up on return. Also, we
