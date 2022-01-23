@@ -3,7 +3,6 @@
 //
 
 #include "Faults.h"
-#include <stdio.h>
 namespace cortex
 {
     void

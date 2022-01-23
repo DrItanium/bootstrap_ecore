@@ -45,8 +45,6 @@ add_executable(hitagimon
 #set_target_properties(hitagimon PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT})
 target_link_libraries(hitagimon
 		gcc
-		c
 		hitagicortex
-		c
 		gcc # necessary for soft float support, will need to provide my own custom routines ahead of this point to access the fpu
 		)
