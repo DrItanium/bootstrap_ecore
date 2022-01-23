@@ -1,4 +1,4 @@
-GROUP(-lgcc -liberty ) /* libraries to link in */
+GROUP(-liberty ) /* libraries to link in */
 
 MEMORY 
 {
@@ -16,12 +16,10 @@ MEMORY
 	 * It assists in testing various routines and aspects of the emulation for
 	 * correctness.
 	 */
-	ram (!rx) : ORIGIN = 0xFFFE0000, l = 2k
+	ram (!rx) : ORIGIN = 0xFFFE0000, l = 4k
 } 
 
 /* Define a symbol that your code can reference. The linker adds the symbol. */ 
-
-STACK_SIZE = 0x100; 
 
 /* Layout the different ELF sections into memory using the above described
  * memory spaces */ 

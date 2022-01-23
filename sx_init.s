@@ -528,7 +528,8 @@ _user_type_core:
     callx setupInterruptHandler
     #callx _activate_read_write_transactions
     mov 0, g14      # C compiler expects g14 = 0
-    callx _main     # assume a main for startup
+    callx _runChecks # assume a main for startup
+    # code goes here to run our tests
 
 .ifdef __i960SB__
 _init_fp:
@@ -565,9 +566,9 @@ defaultInterruptHandlerValue:
  /* -- define RAM area for stacks; size is only a suggestion your actual
   *    mileage may vary
   */
-    .bss _user_stack, 0x10000, 6
-    .bss _intr_stack, 0x10000, 6
-    .bss _sup_stack, 0x10000, 6
+    .bss _user_stack, 0x100, 6
+    .bss _intr_stack, 0x100, 6
+    .bss _sup_stack, 0x100, 6
 
 /* -- Below is a software loop to move data */
 

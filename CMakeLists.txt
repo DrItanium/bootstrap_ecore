@@ -41,4 +41,4 @@ add_executable(bootstrap_ecore
 		)
 
 
-target_link_libraries(bootstrap_ecore gcc )
+# target_link_libraries(bootstrap_ecore gcc )
