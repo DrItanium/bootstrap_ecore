@@ -1,43 +1,27 @@
 GROUP(-lgcc -lm -lc -liberty -lc ) /* libraries to link in */
 
-MEMORY /* describe the partitioning of the memory space for the application */ 
+MEMORY 
 {
-    /* This design will two PSRAM Chips */
-	/* the rom section will start at address 0 and be up to 2 megs in
-	 * length*/ 
-	rom (rx)  : ORIGIN = 0, l = 2M
-	/* the "ram" section will start at 0x0020'0000 which comes immediately after the rom space
-	 * the 32-bit address space and be 14 megs in size */
-	ram (!rx) : o = 0x00200000, l = 6M
-
-    /* This design will span the entire 64 megabyte space */
-	/* the rom section will start at address 0 and be up to 8 megs in
-	 * length*/
-	/* rom (rx)  : ORIGIN = 0, l = 8M */
-	/* the "ram" section will start at 0x0080'0000 which comes immediately after the rom space
-	 * the 32-bit address space and be 56 megs in size */
-	/* ram (!rx) : o = 0x00800000, l = 56M */
-
-	/* NOTE: do not uncomment these lines, this is here as a reference to the
-	 * design of the hitagi board */
-	/* primary io space starts at 0xFE00'0000 and is memory mapped io*/
-	/* io0 (!rx) : o = 0xFE000000, l = 16M  */
-	/* cpu_internal (!rwxail) : o = 0xFF000000, l = 16M - 1 */
-	/* NOTE: the chipset will catch any unmapped reads and writes, report them,
-	 * and either do nothing (on a write) or return zero (on a read)
+	/*
+	 * The ecore processor starts internal execution at 0xFFFD0000
+	 * This is mapped to an internal PROGMEM section on the mega2560 (or other
+	 * large scale microcontrollers
+	 *
+	 * It is only 64k in length but should be just enough to get stuff working
 	 */
-
-
-	/* the format of a memory entry is: name (permissions) : <flags> 
-	ORIGIN or o is the starting location LENGTH or l is the length of the
-	memory section 
-	 */ 
-
+	rom (rx)  : ORIGIN = 0xFFFD0000, l = 64k
+	/*
+	 * Only expose a small section of onboard sram to be used to bootstrap
+	 * the system and test things out. It comes _after_ the rom section.
+	 * It assists in testing various routines and aspects of the emulation for
+	 * correctness.
+	 */
+	ram (!rx) : ORIGIN = 0xFFFE0000, l = 2k
 } 
 
 /* Define a symbol that your code can reference. The linker adds the symbol. */ 
 
-STACK_SIZE = 0x10000; 
+STACK_SIZE = 0x100; 
 
 /* Layout the different ELF sections into memory using the above described
  * memory spaces */ 
