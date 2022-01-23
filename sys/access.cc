@@ -28,17 +28,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 #include <errno.h>
-#include "../chipset/IODevice.h"
 
 extern "C"
 int access(const char* pathName, int mode) {
-    //printf("access(\"%s\", %d)\n", pathName, mode);
-    if (mode == R_OK) {
-        errno = EACCES;
-        return -1;
-    } else {
-        /// @todo check user's permissions for a file, this will be found on the SD Card. so this path needs to be passed to the 1284p
-        errno = EACCES;
-        return -1;
-    }
+    errno = EACCES;
+    return -1;
 }

@@ -29,24 +29,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h>
 #include <errno.h>
 #include <sys/time.h>
-#include "../chipset/IODevice.h"
 
 extern "C"
 off_t
 lseek(int fd, off_t offset, int whence) {
-    //printf("lseek(%d, %ld, %d)\n", fd, offset, whence);
-    /// @todo implement this using an SD Card interface
-    if (fd >= 3) {
-        errno = EBADF;
-        return -1;
-    } else {
-        // builtin files
-        switch (fd) {
-            case STDIN_FILENO:
-                return 0;
-            default:
-                errno = EBADF;
-                return -1;
-        }
-    }
+    errno = EBADF;
+    return -1;
 }

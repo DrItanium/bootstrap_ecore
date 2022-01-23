@@ -26,18 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Created by jwscoggins on 6/29/21.
 //
 
-#include "../chipset/IODevice.h"
 
 extern "C"
 int
 open (char* file, int flags, int mode) {
-    ChipsetBasicFunctions& basic = getBasicChipsetInterface();
-    // ignore the mode flags for now
-    /// @todo implement
-    int result = basic.openFile(file, flags, mode);
-    if (result == -1) {
-        return result;
-    } else {
-        return result + 3;
-    }
+    return -1;
 }

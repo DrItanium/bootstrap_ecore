@@ -28,20 +28,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <unistd.h>
 #include <errno.h>
-#include "../chipset/IODevice.h"
 
 extern "C"
 int
 close(int fd) {
-    if (fd > 2) {
-        if (getBasicChipsetInterface().closeFile(fd - 3)) {
-            return 0;
-        } else {
-            errno = EBADF;
-            return -1;
-        }
-    } else {
-        errno = EBADF;
-        return -1;
-    }
+    errno = EBADF;
+    return -1;
 }
