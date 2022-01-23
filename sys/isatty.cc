@@ -25,9 +25,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // Created by jwscoggins on 6/29/21.
 //
-
+#include <errno.h>
 extern "C"
 int
-isatty (int file) {
-    return file < 3;
+isatty (int) {
+    errno = EBADF;
+    return 0;
 }

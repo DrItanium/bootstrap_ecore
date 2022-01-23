@@ -32,7 +32,5 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C"
 int
 setitimer(int which, const struct itimerval* newValue, struct itimerval* oldValue) {
-    printf("setitimer(%d, %x, %x)\n", which, newValue, oldValue);
-    /// @todo use arduino timers to satisfy this, we use the interrupts to trigger timers
     return 0;
 }

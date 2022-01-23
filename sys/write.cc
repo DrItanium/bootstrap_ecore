@@ -27,22 +27,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 #include <unistd.h>
 #include <errno.h>
-namespace
-{
-    int
-    sys_write(int fd, const void *buf, size_t sz, int &nwrite) {
-        nwrite = 0;
-        return EBADF;
-    }
-}
 extern "C"
 int
 write (int fd, const void* buf, size_t sz) {
-    int numWritten = 0;
-    int r = sys_write(fd, buf, sz, numWritten);
-    if (r != 0) {
-        errno = r;
-        return -1;
-    }
-    return numWritten;
+    errno = EBADF;
+    return -1;
 }

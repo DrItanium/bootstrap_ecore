@@ -25,11 +25,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // Created by jwscoggins on 6/29/21.
 //
-#include <stdio.h>
 extern "C"
 void
 _exit(int status) {
-    printf("exit(%d)\n", status);
     while (true) {
         // just hang here
     }
