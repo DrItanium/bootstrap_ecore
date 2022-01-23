@@ -26,25 +26,19 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-add_library(hitagicortex
-		cortex/Interrupts.cc
-		cortex/Interrupts.h
-		cortex/Faults.cc 
-		cortex/Faults.h)
-add_executable(hitagimon
-		boot/sx_init.s # this must ALWAYS be first!
-		boot/f_table.s
-		boot/i_handle.s
-		boot/i_table.s
-		boot/f_handle.cc
-		boot/ISR.cc
+add_executable(bootstrap_ecore
+		sx_init.s # this must ALWAYS be first!
+		f_table.s
+		i_handle.s
+		i_table.s
+		f_handle.cc
+		ISR.cc
 		hitagimain.cc
+		Interrupts.cc
+		Interrupts.h
+		Faults.cc
+		Faults.h
 		)
 
 
-#set_target_properties(hitagimon PROPERTIES LINK_DEPENDS ${CMAKE_SOURCE_DIR}/${LINKER_SCRIPT})
-target_link_libraries(hitagimon
-		gcc
-		hitagicortex
-		gcc # necessary for soft float support, will need to provide my own custom routines ahead of this point to access the fpu
-		)
+target_link_libraries(bootstrap_ecore gcc )
