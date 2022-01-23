@@ -477,7 +477,8 @@ _user_type_core:
     callx setupInterruptHandler
     mov 0, g14             # C compiler expects g14 = 0
     callx _bootstrapSystem # assume a main for startup
-    # code goes here to run our tests
+    # then we need to pass control off to the external world at this point by jumping to zero
+    # this includes doing the sanity checking and everything like that
 
 .ifdef __i960SB__
 _init_fp:

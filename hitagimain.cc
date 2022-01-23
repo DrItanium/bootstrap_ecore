@@ -30,6 +30,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 template<typename T>
 inline volatile T& memory(const uint32_t address) { return *reinterpret_cast<T*>(address); }
 
+/**
+ * @brief Perform the boot checksum on the initial memory image found in external memory to check for success or not
+ * @return If the checksum was success
+ */
+bool
+performCheckSum() {
+    uint32_t sum = 0;
+    for (uint32_t i = 0; i < 8; ++i) {
+        sum += memory<uint32_t>(i);
+    }
+    return ((~sum) + 0xFFFFFFFF) == 0;
+}
+void
+doIAC(uint8_t messageType, uint8_t field1 = 0, uint16_t field2 = 0, uint32_t field3 = 0, uint32_t field4 = 0, uint32_t field5 = 0) {
+    union {
+       uint32_t output;
+       struct {
+           uint16_t field2;
+           uint8_t field1;
+           uint8_t messageType;
+       };
+    } temporary;
+    temporary.field2 = field2;
+    temporary.field1 = field1;
+    temporary.messageType = messageType;
+    uint32_t IACPortAddress = 0xff000010;
+    uint32_t message[4] = {
+        temporary.output,
+        field3,
+        field4,
+        field5,
+    };
+    asm volatile ("synmovq %0, %1" : : "r" (IACPortAddress), "r" (message));
+}
+void
+jumpToExternalExecution() {
+    // send the processor an IAC message to start normal processor execution
+    // my processor impl has a custom IAC message to do the boot itself
+    doIAC(0);
+}
+void
+checksumFailProcessor() {
+    doIAC(0x01);
+}
 extern "C" void bootstrapSystem() {
+    if (!performCheckSum()) {
+        checksumFailProcessor();
+    } else {
+        jumpToExternalExecution();
+    }
 }
 
