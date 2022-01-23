@@ -1,6 +1,6 @@
 /*
-i960SxChipset
-Copyright (c) 2020-2021, Joshua Scoggins
+bootstrap_ecore
+Copyright (c) 2020-2022, Joshua Scoggins
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /*
  * Fault handler routines
  */
-#include "../cortex/Faults.h"
+#include "Faults.h"
 
 extern "C"
 void
