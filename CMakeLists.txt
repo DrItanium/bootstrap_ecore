@@ -62,7 +62,6 @@ target_link_libraries(hitagimon
 		gcc
 		c
 		m
-		#doom
 		hitagicortex
 		hitagisys
 		stdc++
