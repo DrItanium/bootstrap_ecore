@@ -36,7 +36,6 @@ fault, and system procedure tables, and then vectors to a user defined routine. 
 
 .global system_address_table
 .global prcb_ptr
-.global _prcb_ram
 .global start_ip
 .global cs1
 
@@ -476,8 +475,8 @@ _user_type_core:
     callx _init_fp
 .endif
     callx setupInterruptHandler
-    mov 0, g14      # C compiler expects g14 = 0
-    callx _runChecks # assume a main for startup
+    mov 0, g14             # C compiler expects g14 = 0
+    callx _bootstrapSystem # assume a main for startup
     # code goes here to run our tests
 
 .ifdef __i960SB__
@@ -506,9 +505,6 @@ defaultInterruptHandlerValue:
  /* -- define RAM area for stacks; size is only a suggestion your actual
   *    mileage may vary
   */
-    .bss _user_stack, 0x100, 6
-    .bss _intr_stack, 0x100, 6
-    .bss _sup_stack, 0x100, 6
 
 /* -- Below is a software loop to move data */
 
@@ -532,3 +528,7 @@ fix_stack:
     ret
 
 
+    .bss _user_stack, 0x100, 6
+    .bss _intr_stack, 0x100, 6
+    .bss _sup_stack, 0x100, 6
+    .bss _test_space, 0x100, 6

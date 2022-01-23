@@ -30,6 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 template<typename T>
 inline volatile T& memory(const uint32_t address) { return *reinterpret_cast<T*>(address); }
 
-extern "C" void runChecks() {
+extern "C" void bootstrapSystem() {
 }
 
